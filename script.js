@@ -1,112 +1,72 @@
 //0 TASK
-(function () {
+(function(){
     function House() { 
-        var house = {// Object House
-            currentWindowColor: "white",
-            doors: "brown",
-        };
-        
-        Object.defineProperty(house, 'windows', {
-            get: function () {
-               console.dir(this.currentWindowColor);
-            },
-            set: function (value) {
-                this.currentWindowColor = value;
+             this.windows = "white";
+             this.doors = "brown";
+             this.colorWindows = function (color) {
+                 this.windows = color;
+             };
+             this.colorDoors = function (color) {
+                 this.doors = color;
              }
-        });
-        window.house = house; // this string of code for testing house at global lexical Environtment;
-        };
+             }; 
         
+
         function Car() {
-            var car = { // Object car 
-            model: "a5",
-            brand: "audi",
-            mileage: "120000 km",
-            driver: { // Object driver at object car 
+            this.model = "a5",
+            this.brand = "audi",
+            this.mileage = "120000 km",
+            this.driver = { 
                 name: "Dmitry",
                 sername: "Shlyahov", 
                 age: "26",
-                set changeSername(newSername){ //setfunction to change sername of driver
+                changeSername: function (newSername){ //setfunction to change sername of driver
                     this.sername = newSername;
                 }
-               
-        
-            },
-            go: function (distance) {
+                },
+            this.go = function (distance) {
                 console.info("car drove " + distance + " km");
                 return this.mileage = parseFloat(this.mileage) + distance + " km"; //changing mileage of car
             }
             }
-            window.car = car; // this string of code for testing cars methods and drivers methods at global lexical Environtment;
-        };
-})();
+        })();       
 
 
 //1 TASK
-
-(function (){ //rabbits
-    var rabbits = []; //array of made rabbits
-    
-    function Rabbit (color) { //constructor of new Rabbits
-        if (!color) {
-            return null;
-        };
-        var rabbit = {
-        color: color,
-        set changeColor (newColor) { //method of changing color of rabbits
-            this.color = newColor
-        },
-        }
-        rabbits.push(rabbit);
-    };
-    
-    var newRabbits = ['yellow', 'green', 'gray', 'white', 'black']; //made 5 rabbits
-    for (var i = 0; i < newRabbits.length; i++) {
-        new Rabbit(newRabbits[i]);
-    };
-    
-    for (var i = 0; i < rabbits.length; i++) { // change color of all rabbits to gold
-        rabbits[i].changeColor = "gold";
-    };
-})();
-
-(function (){ //pupils
-    function Pupil (name) {
-        if(!name) {
-            return null;
-        }
-        var student = {
-            name: name, 
-            estimates: [],
-            set setEstimate (estimate){
-                this.estimates.push(estimate);
-            }
-        };
-        return student;
-    };
-})();
-
-
-var horses = [];
-
-function Horse (name) {
-    var horse = {
-        name: name,
-        mileage: "700 km",
-        get allHorseMileage(){
-            
-                var summdistance = 0;
-                for(var i = 0; i < horses.length; i++) {
-                summdistance += parseFloat(horses[i].mileage);
-                }
-                return summdistance;
-            },
-        set go (distance){
-            this.mileage = parseFloat(this.mileage) + distance + " km";
-        }
-    };
-    horses.push(horse);
+(function(){
+function Rabbit (color) { //rabbit constructor
+    this.color = color;
+    this.changeColor = function (newColor) {
+        this.color = newColor;
+    }
 };
 
+var whiteRabbit = new Rabbit('white');
+var greyRabbit = new Rabbit('gray');
+whiteRabbit.changeColor('gold');
+greyRabbit.changeColor('gold');
+console.log(whiteRabbit, greyRabbit);
 
+function Pupil(name) { //pupil constructor
+    this.name = name;
+    this.evaluation = [];
+    this.evaluate = function (evaluate) {
+        this.evaluation.push(evaluate);
+    }
+}
+    
+
+var summMileages = 0;
+function Horse(name) { //horse constructor
+    this.name = name;
+    this.mileage = '100';
+    this.summMileages = summMileages;
+    this.go = function (distance) {
+                this.mileage = parseFloat(this.mileage) + distance + ' km';
+                summMileages += distance;
+              };
+    summMileages += parseFloat(this.mileage); 
+};
+
+})();
 
