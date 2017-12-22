@@ -77,26 +77,31 @@ window.Horse = (function (){    //HORSE constructor
                     Horse.prototype = {
                         constructor: Horse,
                         allMileage: 0,
-                        run: function go (distance) {
-                                if(this.count < distance) {
+                        run: function go (dist) {
+                                dist = dist || 1;
+                                this.mileage += dist;
+                                Horse.prototype.allMileage += dist;
+                               },
+                        relax: function (distance, meth) {
+                                    if(this.count < distance) {
                                     if(this.fatigue !== 10) {
+                                        meth.call(this);
                                         this.fatigue++;
                                         this.count++;
-                                        this.run (distance); 
+                                        this.relax (distance, meth); 
+                                        
                                     }
                                     if(this.fatigue == 10) {
                                         this.fatigue = 0;
                                         var ConcreteHorse = this;
                                         setTimeout(function(){
                                             console.log('Horse resting 1 second');
-                                            ConcreteHorse.run (distance);
-                                        }, 1000)
+                                            ConcreteHorse.relax (distance, meth);
+                                            }, 1000)
                                     }
                                     if(this.count === distance){
                                         this.count = 0;
-                                        this.mileage += distance;
-                                        Horse.prototype.allMileage += distance;
-                                   }
+                                    }
                                 }
                               
                             }   
@@ -105,4 +110,16 @@ window.Horse = (function (){    //HORSE constructor
                 })();
 //////////////////////////////////////
                 var a = new Horse(); // testing Horses
-                a.run(33);
+                a.relax(31,a.run);
+
+
+
+
+
+
+window.Shop = (function (){
+                    function Shop () {
+                        
+                    };
+              return Shop;
+})()
