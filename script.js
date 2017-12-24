@@ -78,14 +78,14 @@ window.Horse = (function (){    //HORSE constructor
                         constructor: Horse,
                         allMileage: 0,
                         run: function go (dist) {
-                                dist = dist || 1;
-                                this.mileage += dist;
-                                Horse.prototype.allMileage += dist;
+                                dist = dist;
+                                this.relax(dist, this.run)
                                },
                         relax: function (distance, meth) {
                                     if(this.count < distance) {
                                     if(this.fatigue !== 10) {
-                                        meth.call(this);
+                                        this.mileage += 1;
+                                        Horse.prototype.allMileage += 1;
                                         this.fatigue++;
                                         this.count++;
                                         this.relax (distance, meth); 
@@ -109,8 +109,8 @@ window.Horse = (function (){    //HORSE constructor
                     return Horse;
                 })();
 //////////////////////////////////////
-                var a = new Horse(); // testing Horses
-                a.relax(31,a.run);
+          /*      var a = new Horse(); // testing Horses
+                a.run(31); */
 
 
 
@@ -119,7 +119,60 @@ window.Horse = (function (){    //HORSE constructor
 
 window.Shop = (function (){
                     function Shop () {
-                        
+                        this.stock = {};
+                        this.price = {};
+                        this.quantityProducts = 0;
                     };
+                       
+                    Shop.prototype = {
+                        constructor: Shop,
+                        allQuantityProducts: 0,
+                        getPrice: function (productName) {
+                           console.info(this.stock[productName]);
+                         },
+                        getStock: function (productName) {
+                            console.info(this.stock[productName]);
+                         },
+                        byProduct: function (productName, quantity) {
+                           if(quantity > this.stock[productName]) {
+                                 console.warn('Please correct "quantity" because we do not have as many products!')
+                           } else {
+                                 this.stock[productName] -= quantity;
+                                 this.quantityProducts -= quantity;
+                                 console.log( this.stock[productName] )
+                                 Shop.prototype.allQuantityProducts -= quantity;
+                           }
+                         },
+                         addProducts: function (objProducts) {
+                            for (var key in objProducts) {
+                                if(objProducts[key]) {
+                                this.price[key] = objProducts[key];
+                                if(this.stock[key]) {
+                                    this.stock[key] += 1;
+                                    this.quantityProducts += 1;
+                                    Shop.prototype.allQuantityProducts += 1;
+                                } else {
+                                    this.stock[key] = 1;
+                                    this.quantityProducts += 1;
+                                    Shop.prototype.allQuantityProducts += 1;
+                                }
+                                }
+                            }
+                         },
+                         addPrices: function (objPrices) {
+                             for (var key in objPrices) {
+                                if(objPrices[key]) {
+                                    this.price[key] = objPrices[key];
+                                }
+                             }
+                         }
+                    }
               return Shop;
 })()
+
+var a = new Shop();
+/*
+a.addProducts({bread: 25, beer: 32, water: 75});
+a.addPrices({bread: 34, vodka: 75, beerMix: 24});
+a.byProduct('beer', 1);
+*/
