@@ -176,3 +176,42 @@ a.addProducts({bread: 25, beer: 32, water: 75});
 a.addPrices({bread: 34, vodka: 75, beerMix: 24});
 a.byProduct('beer', 1);
 */
+
+//TASK 2;
+window.MyArray = (function () {
+        function MyArray () {
+            this.input = "";
+            };
+        MyArray.prototype = Object.create(Array.prototype);
+        return MyArray;
+})();
+
+//TASK 3;
+
+window.Student = (function () {
+        function Student (name, subject) {
+            this.name = name;
+            this.subject = subject;
+            this.rating = (function () {
+                var summ = 0;
+                var marks = [];
+                var marksRandom = Math.floor(Math.random() * (20 - 10 + 1)) + 10; 
+                for (var i = 0; i < marksRandom; i++) {
+                   marks.push(Math.floor(Math.random() * (12 - 1 + 1)) + 1);
+                };
+                var count = marks.length;
+                for (var i = 0; i < marks.length; i++) {
+                    summ += marks[i];
+                };
+                var result = Math.floor(summ / count);    
+                var htmlStr = "<table border = '5'><tr>";        
+                for (var j = 0; j < marks.length; j++) {
+                    htmlStr += '<td>' + marks[j] + '</td>'
+                };  
+                htmlStr += '</tr></table>';           
+                document.body.insertAdjacentHTML("beforeBegin", htmlStr);
+                return result;
+            })();
+            };
+        return Student;
+})();
