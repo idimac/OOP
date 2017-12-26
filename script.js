@@ -215,9 +215,9 @@ window.Student = (function () {
 })();
 
 
-function createTable() {
+function createTable(countOfStudents) {  //This function Creating students. Insert count of students!
     var students = [];
-    for (var i = 0; i < 10; i++) {
+    for (var i = 0; i < countOfStudents; i++) {
     students.push(new Student(i, i)); 
     }
     var htmlStr = "<table border = '5'>";
