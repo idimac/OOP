@@ -77,35 +77,35 @@ window.Horse = (function (){    //HORSE constructor
                     Horse.prototype = {
                         constructor: Horse,
                         allMileage: 0,
-                        run: function go (dist) {
-                                dist = dist;
-                                this.relax(dist, this.run)
-                               },
-                        relax: function (distance, meth) {
-                                    if(this.count < distance) {
-                                    if(this.fatigue !== 10) {
+                        run: function (dist) {
+                                if(this.count < dist){
+                                if(this.fatigue !== 10) {
                                         this.mileage += 1;
                                         Horse.prototype.allMileage += 1;
                                         this.fatigue++;
                                         this.count++;
-                                        this.relax (distance, meth); 
-                                        
-                                    }
-                                    if(this.fatigue == 10) {
+                                this.run(dist);
+                               }
+                               if(this.fatigue == 10) {
+                                    this.relax(dist, this.run)
+                               }
+                               if(this.count === dist) {
+                                this.count = 0;
+                            }
+                            }
+                            
+                            },
+                        relax: function (distance, meth) {
                                         this.fatigue = 0;
                                         var ConcreteHorse = this;
-                                        setTimeout(function(){
+                                        setTimeout (function() {
                                             console.log('Horse resting 1 second');
-                                            ConcreteHorse.relax (distance, meth);
+                                            meth.call(ConcreteHorse, distance, meth);
                                             }, 1000)
-                                    }
-                                    if(this.count === distance){
-                                        this.count = 0;
                                     }
                                 }
                               
-                            }   
-                    }
+                              
                     return Horse;
                 })();
 //////////////////////////////////////
@@ -192,26 +192,49 @@ window.Student = (function () {
         function Student (name, subject) {
             this.name = name;
             this.subject = subject;
-            this.rating = (function () {
-                var summ = 0;
+            this.marks = (function() {
                 var marks = [];
                 var marksRandom = Math.floor(Math.random() * (20 - 10 + 1)) + 10; 
                 for (var i = 0; i < marksRandom; i++) {
                    marks.push(Math.floor(Math.random() * (12 - 1 + 1)) + 1);
                 };
-                var count = marks.length;
-                for (var i = 0; i < marks.length; i++) {
-                    summ += marks[i];
-                };
-                var result = Math.floor(summ / count);    
-                var htmlStr = "<table border = '5'><tr>";        
-                for (var j = 0; j < marks.length; j++) {
-                    htmlStr += '<td>' + marks[j] + '</td>'
-                };  
-                htmlStr += '</tr></table>';           
-                document.body.insertAdjacentHTML("beforeBegin", htmlStr);
-                return result;
+                return marks;
             })();
+            if (this.marks) {
+                var summ = 0;
+                
+                var count = this.marks.length;
+                for (var i = 0; i < this.marks.length; i++) {
+                    summ += this.marks[i];
+                };
+                var result = Math.floor(summ / count);
+                this.rating = result;
+            }
             };
         return Student;
 })();
+
+
+function createTable() {
+    var students = [];
+    for (var i = 0; i < 10; i++) {
+    students.push(new Student(i, i)); 
+    }
+    var htmlStr = "<table border = '5'>";
+    for(var j = 0; j <students.length; j++) {
+        htmlStr += '<tr><th>' + students[j].name + '<th>';
+        for(var k = 0; k < students[j].marks.length; k++){
+            htmlStr += '<td>' + students[j].marks[k] + '</td>'
+        }
+        htmlStr += '</tr>';
+    }
+    htmlStr += "</table>"
+    document.body.insertAdjacentHTML("beforeBegin", htmlStr);
+
+  return students;
+}
+///////////////////////
+
+          
+    
+   
